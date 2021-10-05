@@ -10,6 +10,7 @@ namespace Pulu
         moistureSensorLevel2(),
         moistureSensorLevel3(),
         moistureSensorLevel4(),
+        moistureSensorLevel5(),
         airTemperatureSensor(),
         groundTemperatureSensor()
     {
@@ -22,9 +23,11 @@ namespace Pulu
         moisture();
         airTemperature();
         groundTemperature();
+        batteryLevel();
+        return true;
     }
 
-    uint16_t * Sensor::GetValues()
+    uint16_t * Sensor::Values()
     {
         return values;
     }
@@ -36,25 +39,26 @@ namespace Pulu
 
     void Sensor::moisture()
     {
-        values[1] = moistureSensorLevel1->moisture();
-        values[2] = moistureSensorLevel2->moisture();
-        values[3] = moistureSensorLevel3->moisture();
-        values[4] = moistureSensorLevel4->moisture();
+        values[3] = moistureSensorLevel1->moisture();
+        values[4] = moistureSensorLevel2->moisture();
+        values[5] = moistureSensorLevel3->moisture();
+        values[6] = moistureSensorLevel4->moisture();
+        values[7] = moistureSensorLevel5->moisture();
     }
 
     void Sensor::airTemperature()
     {
-        values[5] = airTemperatureSensor->temperature();
+        values[1] = airTemperatureSensor->temperature();
     }
 
     void Sensor::groundTemperature()
     {
-        values[6] = groundTemperatureSensor->temperature();
+        values[2] = groundTemperatureSensor->temperature();
     }
 
     void Sensor::batteryLevel()
     {
-        values[7] = 100;
+        values[8] = 100;
     }
 
 }

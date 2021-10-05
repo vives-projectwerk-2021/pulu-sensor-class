@@ -9,12 +9,12 @@ namespace Pulu
 {
     class Sensor
     {
-        #define totalSensors 8
+        #define totalSensors 9
 
         public:
             Sensor();
             bool Read();
-            uint16_t * GetValues();
+            uint16_t * Values();
 
         private:
             void lightLevel();
@@ -29,6 +29,7 @@ namespace Pulu
             FakeMoistSensor * moistureSensorLevel2;
             FakeMoistSensor * moistureSensorLevel3;
             FakeMoistSensor * moistureSensorLevel4;
+            FakeMoistSensor * moistureSensorLevel5;
 
             FakeTemperatureSensor * airTemperatureSensor;
             FakeTemperatureSensor * groundTemperatureSensor;
