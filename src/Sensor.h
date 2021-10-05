@@ -1,9 +1,9 @@
 #pragma once
 
 #include "stdint.h"
-#include "mbed-fake-light-sensor/src/fakeLightSensor.h"
-#include "mbed-fake-moisture-sensor/src/fakeMoistSensor.h"
-#include "mbed-fake-temperature-sensor/src/FakeTemperatureSensor.h"
+#include "fakeLightSensor.h"
+#include "fakeMoistSensor.h"
+#include "FakeTemperatureSensor.h"
 
 namespace Pulu
 {
