@@ -30,8 +30,8 @@ namespace Pulu
             FakeMoistSensor * moistureSensorLevel3;
             FakeMoistSensor * moistureSensorLevel4;
 
-            FakeTemperatureSensor * airTemperature;
-            FakeTemperatureSensor * groundTemperature;
+            FakeTemperatureSensor * airTemperatureSensor;
+            FakeTemperatureSensor * groundTemperatureSensor;
 
     };  
 };

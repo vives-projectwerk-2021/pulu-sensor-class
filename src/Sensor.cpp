@@ -10,8 +10,8 @@ namespace Pulu
         moistureSensorLevel2(),
         moistureSensorLevel3(),
         moistureSensorLevel4(),
-        airTemperature(),
-        groundTemperature()
+        airTemperatureSensor(),
+        groundTemperatureSensor()
     {
         // DEFINE ALL OBJECT OF CLASSES
     }
@@ -44,12 +44,12 @@ namespace Pulu
 
     void Sensor::airTemperature()
     {
-        values[5] = airTemperature.temperature();
+        values[5] = airTemperatureSensor.temperature();
     }
 
     void Sensor::groundTemperature()
     {
-        values[6] = groundTemperature.temperature();
+        values[6] = groundTemperatureSensor.temperature();
     }
 
     void Sensor::batteryLevel()
