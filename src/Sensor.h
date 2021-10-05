@@ -20,7 +20,7 @@ namespace Pulu
             void lightLevel();
             void moisture();
             void airTemperature();
-            void voidTemperature();
+            void groundTemperature();
             void batteryLevel();
             uint16_t values[totalSensors];
             FakeLightSensor * lightSensor;
