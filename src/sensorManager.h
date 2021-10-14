@@ -16,7 +16,7 @@ namespace Pulu {
             
         private:
             std::array<FakeLightSensor, 1> lightSensors;
-            std::array<FakeMoistSensor, 4> moistureSensors;
+            std::array<FakeMoistSensor, 8> moistureSensors;
             std::array<FakeTemperatureSensor, 2> temperatureSensors;
     };
 };
