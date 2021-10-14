@@ -19,6 +19,7 @@ namespace Pulu {
             FakeTemperatureSensor(),
             FakeTemperatureSensor()
         };
+        batterySensor = Battery();
     };
 
     bool sensorManager::init() {
@@ -37,6 +38,7 @@ namespace Pulu {
         for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
             values.temperature[i] = temperatureSensors[i].temperature();
         }
+        values.battery = batterySensor.voltage();
         return values;
     }
 };
