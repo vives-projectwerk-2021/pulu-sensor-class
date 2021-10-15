@@ -1,4 +1,4 @@
-mbed-fake-light-sensor/
-mbed-fake-temperature-sensor/
-mbed-fake-moisture-sensor/
-mbed-battery-status/
+pulu-fake-light-sensor/
+pulu-fake-temperature-sensor/
+pulu-fake-moisture-sensor/
+pulu-internal-voltage/
