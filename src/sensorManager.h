@@ -4,8 +4,13 @@
 #include "fakeMoistSensor.h"
 #include "FakeTemperatureSensor.h"
 #include "battery.h"
-#include <array>
 #include "sensorValues.h"
+#include <array>
+
+#define sensorManager_DEBUG(x, ...)   //set as comment to enable debugging
+#ifndef sensorManager_DEBUG
+#define sensorManager_DEBUG(x, ...) printf("[sensorManager]\t" x "\r\n", ##__VA_ARGS__)
+#endif
 
 namespace Pulu {
     class sensorManager {
