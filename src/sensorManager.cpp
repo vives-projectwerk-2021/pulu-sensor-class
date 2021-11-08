@@ -9,10 +9,6 @@ namespace Pulu {
             FakeMoistSensor(),
             FakeMoistSensor(),
             FakeMoistSensor(),
-            FakeMoistSensor(),
-            FakeMoistSensor(),
-            FakeMoistSensor(),
-            FakeMoistSensor(),
             FakeMoistSensor()
         };
         temperatureSensors = {
