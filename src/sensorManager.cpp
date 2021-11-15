@@ -11,10 +11,17 @@ namespace Pulu {
             FakeMoistSensor(),
             FakeMoistSensor()
         };
-        temperatureSensors = {
-            FakeTemperatureSensor(),
-            FakeTemperatureSensor()
-        };
+        #ifdef fakeTemperature
+            temperatureSensors = {
+                FakeTemperatureSensor(),
+                FakeTemperatureSensor()
+            };
+        #else
+            temperatureSensors = {
+                TCN75(&i2c, 0x48<<1),
+                TCN75(&i2c, 0x49<<1)
+            };
+        #endif
         batterySensor = Battery();
     };
 
@@ -36,7 +43,15 @@ namespace Pulu {
             sensorManager_DEBUG("moisture[%d]: %d", i, values.moisture[i]);
         }
         for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
-            values.temperature[i] = temperatureSensors[i].temperature();
+            #ifdef fakeTemperature
+                values.temperature[i] = temperatureSensors[i].temperature();
+            #else
+                temperatureSensors[i].wake();
+                wait_us(500);
+                values.temperature[i] = temperatureSensors[i].temperature();
+                wait_us(500);
+                temperatureSensors[i].sleep();
+            #endif
             sensorManager_DEBUG("temperature[%d]: %d", i, values.temperature[i]);
         }
         values.battery = batterySensor.voltage();

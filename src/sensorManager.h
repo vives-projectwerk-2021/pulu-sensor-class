@@ -1,8 +1,14 @@
 #pragma once
-
 #include "fakeLightSensor.h"
 #include "fakeMoistSensor.h"
-#include "FakeTemperatureSensor.h"
+
+//#define fakeTemperature
+#ifdef fakeTemperature
+    #include "FakeTemperatureSensor.h"
+#else
+    #include "TCN75.h"
+#endif
+
 #include "battery.h"
 #include "sensorValues.h"
 #include <array>
@@ -23,7 +29,13 @@ namespace Pulu {
         private:
             std::array<FakeLightSensor, 1> lightSensors;
             std::array<FakeMoistSensor, 4> moistureSensors;
-            std::array<FakeTemperatureSensor, 2> temperatureSensors;
+            #ifdef fakeTemperature
+                std::array<FakeTemperatureSensor, 2> temperatureSensors;
+            #else
+                std::array<TCN75, 2> temperatureSensors;
+            #endif
             Battery batterySensor;
+
+            I2C i2c(PC_1, PC_0);
     };
 };
