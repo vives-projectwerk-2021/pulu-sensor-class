@@ -2,7 +2,7 @@
 #include "fakeLightSensor.h"
 #include "fakeMoistSensor.h"
 
-//#define fakeTemperature
+#define fakeTemperature
 #ifdef fakeTemperature
     #include "FakeTemperatureSensor.h"
 #else
@@ -32,10 +32,10 @@ namespace Pulu {
             #ifdef fakeTemperature
                 std::array<FakeTemperatureSensor, 2> temperatureSensors;
             #else
-                std::array<TCN75, 2> temperatureSensors;
+                std::array<TCN75*, 2> temperatureSensors;
             #endif
             Battery batterySensor;
 
-            I2C i2c(PC_1, PC_0);
+            I2C i2c;
     };
 };
