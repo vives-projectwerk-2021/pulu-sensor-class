@@ -48,11 +48,10 @@ namespace Pulu {
             #ifdef fakeTemperature
                 values.temperature[i] = temperatureSensors[i].temperature();
             #else
-                //temperatureSensors[i]->wake();
-                //wait_us(500);
+                temperatureSensors[i]->wake();
+                wait_us(60000);
                 values.temperature[i] = temperatureSensors[i]->temperature();
-                //wait_us(500);
-                //temperatureSensors[i]->sleep();
+                temperatureSensors[i]->sleep();
             #endif
             sensorManager_DEBUG("temperature[%d]: %d", i, values.temperature[i]);
         }
