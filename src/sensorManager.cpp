@@ -1,9 +1,7 @@
 #include "sensorManager.h"
 
 namespace Pulu {
-    sensorManager::sensorManager() :
-        i2c(PC_1, PC_0)
-    {
+    sensorManager::sensorManager(Sensors::config config) {
         lightSensors = {
             FakeLightSensor()
         };
@@ -19,9 +17,11 @@ namespace Pulu {
                 FakeTemperatureSensor()
             };
         #else
-            temperatureSensors = {
-                new TCN75(&i2c, 0x48<<1), //0x49<<1
-                new TCN75(&i2c, 0x48<<1)
+            for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
+                temperatureSensors[i] = new TCN75(
+                        config.temperature[i].i2c,
+                        config.temperature[i].address
+                    );
             };
         #endif
         batterySensor = Battery();

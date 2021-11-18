@@ -11,6 +11,7 @@
 
 #include "battery.h"
 #include "sensorValues.h"
+#include "sensorConfig.h"
 #include <array>
 
 #define sensorManager_DEBUG(x, ...)   //set as comment to enable debugging
@@ -21,7 +22,7 @@
 namespace Pulu {
     class sensorManager {
         public:
-            sensorManager();
+            sensorManager(Sensors::config config);
 
             bool init(); // true = success
             sensorValues values();
@@ -35,7 +36,5 @@ namespace Pulu {
                 std::array<TCN75*, 2> temperatureSensors;
             #endif
             Battery batterySensor;
-
-            I2C i2c;
     };
 };
