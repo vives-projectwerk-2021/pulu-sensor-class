@@ -1,5 +1,4 @@
 #pragma once
-#include "fakeMoistSensor.h"
 
 #define fakeTemperature
 #ifdef fakeTemperature
@@ -13,6 +12,13 @@
     #include "fakeLightSensor.h"
 #else
     #include "LTR329ALS.h"
+#endif
+
+//#define fakeMoisture
+#ifdef fakeMoisture
+    #include "fakeMoistSensor.h"
+#else
+    #include "MoistureSensors.h"
 #endif
 
 #include "battery.h"
@@ -38,7 +44,11 @@ namespace Pulu {
             void wake_all();
             
         private:
-            std::array<FakeMoistSensor, 4> moistureSensors;
+            #ifdef fakeMoisture
+                std::array<FakeMoistSensor, 4> moistureSensors;
+            #else
+                std::array<MoistureSensors*, 1> moistureSensors;
+            #endif
             #ifdef fakeTemperature
                 std::array<FakeTemperatureSensor, 2> temperatureSensors;
             #else

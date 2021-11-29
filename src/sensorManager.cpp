@@ -11,12 +11,18 @@ namespace Pulu {
                 new LTR329ALS(config.light[0].i2c, config.light[0].address)
             };
         #endif
-        moistureSensors = {
-            FakeMoistSensor(),
-            FakeMoistSensor(),
-            FakeMoistSensor(),
-            FakeMoistSensor()
-        };
+        #ifdef fakeMoisture
+            moistureSensors = {
+                FakeMoistSensor(),
+                FakeMoistSensor(),
+                FakeMoistSensor(),
+                FakeMoistSensor()
+            };
+        #else
+            moistureSensors = {
+                new MoistureSensors(config.moisture[0].i2c)
+            };
+        #endif
         #ifdef fakeTemperature
             temperatureSensors = {
                 FakeTemperatureSensor(),
@@ -52,8 +58,21 @@ namespace Pulu {
             sensorManager_DEBUG("light[%d]: %d", i, values.light[i]);
         }
         for(uint8_t i = 0; i<moistureSensors.size(); i++) {
-            values.moisture[i] = moistureSensors[i].moisture();
-            sensorManager_DEBUG("moisture[%d]: %d", i, values.moisture[i]);
+            #ifdef fakeMoisture
+                values.moisture[i] = moistureSensors[i].moisture();
+                sensorManager_DEBUG("moisture[%d]: %d", i, values.moisture[i]);
+            #else
+                int16_t results[4];
+                moistureSensors[i]->readFdcChannels(results);
+                values.moisture[0] = results[0];
+                sensorManager_DEBUG("moisture[%d]: %d", 0, values.moisture[0]);
+                values.moisture[1] = results[1];
+                sensorManager_DEBUG("moisture[%d]: %d", 1, values.moisture[1]);
+                values.moisture[2] = results[2];
+                sensorManager_DEBUG("moisture[%d]: %d", 2, values.moisture[2]);
+                values.moisture[3] = results[3];
+                sensorManager_DEBUG("moisture[%d]: %d", 3, values.moisture[3]);
+            #endif
         }
         for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
             #ifdef fakeTemperature
