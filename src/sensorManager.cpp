@@ -2,9 +2,15 @@
 
 namespace Pulu {
     sensorManager::sensorManager(Sensors::config config) {
-        lightSensors = {
-            FakeLightSensor()
-        };
+        #ifdef fakeLight
+            lightSensors = {
+                FakeLightSensor()
+            };
+        #else
+            lightSensors = {
+                new LTR329ALS(config.light[0].i2c, config.light[0].address)
+            };
+        #endif
         moistureSensors = {
             FakeMoistSensor(),
             FakeMoistSensor(),
@@ -34,10 +40,15 @@ namespace Pulu {
     }
 
     sensorValues sensorManager::values() {
+        wake_all();
         sensorValues values;
         sensorManager_DEBUG("start reading values");
         for(uint8_t i = 0; i<lightSensors.size(); i++) {
-            values.light[i] = lightSensors[i].lightLevel();
+            #ifdef fakeLight
+                values.light[i] = lightSensors[i].lightLevel();
+            #else
+                values.light[i] = lightSensors[i]->readLux();
+            #endif
             sensorManager_DEBUG("light[%d]: %d", i, values.light[i]);
         }
         for(uint8_t i = 0; i<moistureSensors.size(); i++) {
@@ -48,15 +59,40 @@ namespace Pulu {
             #ifdef fakeTemperature
                 values.temperature[i] = temperatureSensors[i].temperature();
             #else
-                temperatureSensors[i]->wake();
-                wait_us(60000);
                 values.temperature[i] = temperatureSensors[i]->temperature();
-                temperatureSensors[i]->sleep();
             #endif
             sensorManager_DEBUG("temperature[%d]: %d", i, values.temperature[i]);
         }
         values.battery = batterySensor.voltage();
         sensorManager_DEBUG("battery: %f", values.battery);
+        sleep_all();
         return values;
+    }
+
+    void sensorManager::sleep_all() {
+        #ifndef fakeLight
+            for(uint8_t i = 0; i<lightSensors.size(); i++) {
+                lightSensors[i]->sleep();
+            }
+        #endif
+        #ifndef fakeTemperature
+            for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
+                temperatureSensors[i]->sleep();
+            }
+        #endif
+    }
+    void sensorManager::wake_all() {
+        #ifndef fakeLight
+            for(uint8_t i = 0; i<lightSensors.size(); i++) {
+                lightSensors[i]->wake();
+            }
+        #endif
+        #ifndef fakeTemperature
+            for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
+                temperatureSensors[i]->wake();
+            }
+        #endif
+        // give time to sensors to start measuring after wake up
+        ThisThread::sleep_for(200ms);
     }
 };

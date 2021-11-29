@@ -1,5 +1,4 @@
 #pragma once
-#include "fakeLightSensor.h"
 #include "fakeMoistSensor.h"
 
 #define fakeTemperature
@@ -7,6 +6,13 @@
     #include "FakeTemperatureSensor.h"
 #else
     #include "TCN75.h"
+#endif
+
+#define fakeLight
+#ifdef fakeLight
+    #include "fakeLightSensor.h"
+#else
+    #include "LTR329ALS.h"
 #endif
 
 #include "battery.h"
@@ -26,14 +32,22 @@ namespace Pulu {
 
             bool init(); // true = success
             sensorValues values();
+
+        private:
+            void sleep_all();
+            void wake_all();
             
         private:
-            std::array<FakeLightSensor, 1> lightSensors;
             std::array<FakeMoistSensor, 4> moistureSensors;
             #ifdef fakeTemperature
                 std::array<FakeTemperatureSensor, 2> temperatureSensors;
             #else
                 std::array<TCN75*, 2> temperatureSensors;
+            #endif
+            #ifdef fakeLight
+                std::array<FakeLightSensor, 1> lightSensors;
+            #else
+                std::array<LTR329ALS*, 1> lightSensors;
             #endif
             Battery batterySensor;
     };

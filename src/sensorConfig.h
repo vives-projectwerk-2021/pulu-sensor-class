@@ -13,6 +13,7 @@ namespace Pulu {
 
         struct config {
             std::array<sensorConfig, 2> temperature;
+            std::array<sensorConfig, 1> light;
         };
     };
 };
