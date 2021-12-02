@@ -2,7 +2,7 @@
 
 namespace Pulu {
     sensorManager::sensorManager(Sensors::config config) {
-        #ifdef fakeLight
+        #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
             lightSensors = {
                 FakeLightSensor()
             };
@@ -11,7 +11,7 @@ namespace Pulu {
                 new LTR329ALS(config.light[0].i2c, config.light[0].address)
             };
         #endif
-        #ifdef fakeMoisture
+        #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
             moistureSensors = {
                 FakeMoistSensor(),
                 FakeMoistSensor(),
@@ -23,7 +23,7 @@ namespace Pulu {
                 new MoistureSensors(config.moisture[0].i2c)
             };
         #endif
-        #ifdef fakeTemperature
+        #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
             temperatureSensors = {
                 FakeTemperatureSensor(),
                 FakeTemperatureSensor()
@@ -50,7 +50,7 @@ namespace Pulu {
         sensorValues values;
         sensorManager_DEBUG("start reading values");
         for(uint8_t i = 0; i<lightSensors.size(); i++) {
-            #ifdef fakeLight
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
                 values.light[i] = lightSensors[i].lightLevel();
             #else
                 values.light[i] = lightSensors[i]->readLux();
@@ -58,7 +58,7 @@ namespace Pulu {
             sensorManager_DEBUG("light[%d]: %d", i, values.light[i]);
         }
         for(uint8_t i = 0; i<moistureSensors.size(); i++) {
-            #ifdef fakeMoisture
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
                 values.moisture[i] = moistureSensors[i].moisture();
                 sensorManager_DEBUG("moisture[%d]: %d", i, values.moisture[i]);
             #else
@@ -75,7 +75,7 @@ namespace Pulu {
             #endif
         }
         for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
-            #ifdef fakeTemperature
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
                 values.temperature[i] = temperatureSensors[i].temperature();
             #else
                 values.temperature[i] = temperatureSensors[i]->temperature();
@@ -89,24 +89,24 @@ namespace Pulu {
     }
 
     void sensorManager::sleep_all() {
-        #ifndef fakeLight
+        #if !MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
             for(uint8_t i = 0; i<lightSensors.size(); i++) {
                 lightSensors[i]->sleep();
             }
         #endif
-        #ifndef fakeTemperature
+        #if !MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
             for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
                 temperatureSensors[i]->sleep();
             }
         #endif
     }
     void sensorManager::wake_all() {
-        #ifndef fakeLight
+        #if !MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
             for(uint8_t i = 0; i<lightSensors.size(); i++) {
                 lightSensors[i]->wake();
             }
         #endif
-        #ifndef fakeTemperature
+        #if !MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
             for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
                 temperatureSensors[i]->wake();
             }

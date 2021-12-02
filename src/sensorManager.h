@@ -1,21 +1,18 @@
 #pragma once
 
-#define fakeTemperature
-#ifdef fakeTemperature
+#if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
     #include "FakeTemperatureSensor.h"
 #else
     #include "TCN75.h"
 #endif
 
-#define fakeLight
-#ifdef fakeLight
+#if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
     #include "fakeLightSensor.h"
 #else
     #include "LTR329ALS.h"
 #endif
 
-//#define fakeMoisture
-#ifdef fakeMoisture
+#if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
     #include "fakeMoistSensor.h"
 #else
     #include "MoistureSensors.h"
@@ -44,17 +41,17 @@ namespace Pulu {
             void wake_all();
             
         private:
-            #ifdef fakeMoisture
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
                 std::array<FakeMoistSensor, 4> moistureSensors;
             #else
                 std::array<MoistureSensors*, 1> moistureSensors;
             #endif
-            #ifdef fakeTemperature
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
                 std::array<FakeTemperatureSensor, 2> temperatureSensors;
             #else
                 std::array<TCN75*, 2> temperatureSensors;
             #endif
-            #ifdef fakeLight
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
                 std::array<FakeLightSensor, 1> lightSensors;
             #else
                 std::array<LTR329ALS*, 1> lightSensors;

@@ -1,0 +1,17 @@
+{
+    "name": "pulu-sensor-manager",
+    "config": {
+        "fake-light": {
+            "help": "Use a lightsensor simulation",
+            "value": true
+        },
+        "fake-temperature": {
+            "help": "Use a temperaturesensor simulation",
+            "value": true
+        },
+        "fake-moisture": {
+            "help": "Use a moisturesensor simulation",
+            "value": true
+        }
+    }
+}

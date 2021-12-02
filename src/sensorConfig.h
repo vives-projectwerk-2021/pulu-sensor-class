@@ -12,9 +12,15 @@ namespace Pulu {
         };
 
         struct config {
-            std::array<sensorConfig, 2> temperature;
-            std::array<sensorConfig, 1> light;
-            std::array<sensorConfig, 1> moisture;
+            #if !MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
+                std::array<sensorConfig, 2> temperature;
+            #endif
+            #if !MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
+                std::array<sensorConfig, 1> light;
+            #endif
+            #if !MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
+                std::array<sensorConfig, 1> moisture;
+            #endif
         };
     };
 };
