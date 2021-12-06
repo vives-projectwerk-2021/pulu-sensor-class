@@ -82,7 +82,12 @@ namespace Pulu {
             #endif
             sensorManager_DEBUG("temperature[%d]: %d", i, values.temperature[i]);
         }
-        values.battery = batterySensor.voltage();
+        #if MBED_CONF_APP_NUCLEO
+            values.battery = batterySensor.voltage();
+        #else
+            values.battery = ((AnalogIn(PA_4).read_u16()*3.3)/pow(2,16))*((330000.0+220000.0)/330000.0);
+        #endif
+
         sensorManager_DEBUG("battery: %f", values.battery);
         sleep_all();
         return values;
