@@ -20,7 +20,7 @@ namespace Pulu {
             };
         #else
             moistureSensors = {
-                new MoistureSensors(config.moisture[0].i2c)
+                new FDC1004(config.moisture[0].i2c, config.moisture[0].address)
             };
         #endif
         #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE

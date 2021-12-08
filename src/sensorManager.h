@@ -15,7 +15,7 @@
 #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
     #include "fakeMoistSensor.h"
 #else
-    #include "MoistureSensors.h"
+    #include "FDC1004.h"
 #endif
 
 #include "battery.h"
@@ -44,7 +44,7 @@ namespace Pulu {
             #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
                 std::array<FakeMoistSensor, 4> moistureSensors;
             #else
-                std::array<MoistureSensors*, 1> moistureSensors;
+                std::array<FDC1004*, 1> moistureSensors;
             #endif
             #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
                 std::array<FakeTemperatureSensor, 2> temperatureSensors;
