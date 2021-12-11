@@ -1,15 +1,15 @@
 #pragma once
 
-#if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
-    #include "FakeTemperatureSensor.h"
-#else
-    #include "TCN75.h"
-#endif
-
 #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
     #include "fakeLightSensor.h"
 #else
     #include "LTR329ALS.h"
+#endif
+
+#if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
+    #include "FakeTemperatureSensor.h"
+#else
+    #include "TCN75.h"
 #endif
 
 #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
@@ -19,6 +19,7 @@
 #endif
 
 #include "battery.h"
+
 #include "sensorValues.h"
 #include "sensorConfig.h"
 #include <array>
