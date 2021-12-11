@@ -20,7 +20,7 @@
 
 #include "battery.h"
 
-#include "sensorValues.h"
+#include "measurement.h"
 #include "sensorConfig.h"
 #include <array>
 
@@ -34,11 +34,11 @@ namespace Pulu {
         public:
             sensorManager(Sensors::config config);
 
-            sensorValues values();
+            measurement do_measurement();
 
         private:
-            void sleep_all();
-            void wake_all();
+            void sleep_all(Sensors::status &status);
+            void wake_all(Sensors::status &status);
             
         private: // light
             #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
