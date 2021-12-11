@@ -37,7 +37,6 @@ namespace Pulu {
     measurement sensorManager::do_measurement() {
         measurement m;
         wake_all(m.status);
-        sensorValues values;
         sensorManager_DEBUG("starting measurement");
         for(uint8_t i = 0; i<lightSensors.size(); i++) {
             #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
@@ -86,13 +85,13 @@ namespace Pulu {
             sensorManager_DEBUG("moisture[%d-%d] status: %d", 4*i, 4*i+3, m.status.moisture[i]);
         }
         #if MBED_CONF_APP_NUCLEO
-            values.battery = batterySensor.voltage();
+            m.values.battery = batterySensor.voltage();
         #else
-            values.battery = ((AnalogIn(PA_4).read_u16()*3.3)/pow(2,16))*((330000.0+220000.0)/330000.0);
+            m.values.battery = ((AnalogIn(PA_4).read_u16()*3.3)/pow(2,16))*((330000.0+220000.0)/330000.0);
         #endif
         sensorManager_DEBUG("battery: %f", values.battery);
 
-        sleep_all();
+        sleep_all(m.status);
         return values;
     }
 
