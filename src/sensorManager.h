@@ -33,7 +33,6 @@ namespace Pulu {
         public:
             sensorManager(Sensors::config config);
 
-            bool init(); // true = success
             sensorValues values();
 
         private:

@@ -34,12 +34,6 @@ namespace Pulu {
         batterySensor = Battery();
     };
 
-    bool sensorManager::init() {
-        // TODO: init all sensors when not fake
-        sensorManager_DEBUG("init: SUCCESS");
-        return true;
-    }
-
     sensorValues sensorManager::values() {
         wake_all();
         sensorValues values;
