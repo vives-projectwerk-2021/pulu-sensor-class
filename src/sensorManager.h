@@ -40,22 +40,25 @@ namespace Pulu {
             void sleep_all();
             void wake_all();
             
-        private:
-            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
-                std::array<FakeMoistSensor, 4> moistureSensors;
-            #else
-                std::array<FDC1004*, 1> moistureSensors;
-            #endif
-            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
-                std::array<FakeTemperatureSensor, 2> temperatureSensors;
-            #else
-                std::array<TCN75*, 2> temperatureSensors;
-            #endif
+        private: // light
             #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_LIGHT
                 std::array<FakeLightSensor, 1> lightSensors;
             #else
                 std::array<LTR329ALS*, 1> lightSensors;
             #endif
+        private: // temperature
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
+                std::array<FakeTemperatureSensor, 2> temperatureSensors;
+            #else
+                std::array<TCN75*, 2> temperatureSensors;
+            #endif
+        private: // moisture
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
+                std::array<FakeMoistSensor, 1> moistureSensors;
+            #else
+                std::array<FDC1004*, 1> moistureSensors;
+            #endif
+        private: // battery
             Battery batterySensor;
     };
 };

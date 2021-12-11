@@ -11,29 +11,24 @@ namespace Pulu {
                 new LTR329ALS(config.light[0].i2c, config.light[0].address)
             };
         #endif
-        #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
-            moistureSensors = {
-                FakeMoistSensor(),
-                FakeMoistSensor(),
-                FakeMoistSensor(),
-                FakeMoistSensor()
-            };
-        #else
-            moistureSensors = {
-                new FDC1004(config.moisture[0].i2c, config.moisture[0].address)
-            };
-        #endif
         #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
             temperatureSensors = {
                 FakeTemperatureSensor(),
                 FakeTemperatureSensor()
             };
         #else
-            for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
-                temperatureSensors[i] = new TCN75(
-                        config.temperature[i].i2c,
-                        config.temperature[i].address
-                    );
+            temperatureSensors = {
+                new TCN75(config.temperature[0].i2c, config.temperature[0].address),
+                new TCN75(config.temperature[1].i2c, config.temperature[1].address)
+            };
+        #endif
+        #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
+            moistureSensors = {
+                FakeMoistSensor()
+            };
+        #else
+            moistureSensors = {
+                new FDC1004(config.moisture[0].i2c, config.moisture[0].address)
             };
         #endif
         batterySensor = Battery();
@@ -57,23 +52,6 @@ namespace Pulu {
             #endif
             sensorManager_DEBUG("light[%d]: %d", i, values.light[i]);
         }
-        for(uint8_t i = 0; i<moistureSensors.size(); i++) {
-            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
-                values.moisture[i] = moistureSensors[i].moisture();
-                sensorManager_DEBUG("moisture[%d]: %d", i, values.moisture[i]);
-            #else
-                int16_t results[4];
-                moistureSensors[i]->readFdcChannels(results);
-                values.moisture[0] = results[0];
-                sensorManager_DEBUG("moisture[%d]: %d", 0, values.moisture[0]);
-                values.moisture[1] = results[1];
-                sensorManager_DEBUG("moisture[%d]: %d", 1, values.moisture[1]);
-                values.moisture[2] = results[2];
-                sensorManager_DEBUG("moisture[%d]: %d", 2, values.moisture[2]);
-                values.moisture[3] = results[3];
-                sensorManager_DEBUG("moisture[%d]: %d", 3, values.moisture[3]);
-            #endif
-        }
         for(uint8_t i = 0; i<temperatureSensors.size(); i++) {
             #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_TEMPERATURE
                 values.temperature[i] = temperatureSensors[i].temperature();
@@ -82,13 +60,32 @@ namespace Pulu {
             #endif
             sensorManager_DEBUG("temperature[%d]: %d", i, values.temperature[i]);
         }
+        for(uint8_t i = 0; i<moistureSensors.size(); i++) {
+            int16_t results[4] = {0};
+            #if MBED_CONF_PULU_SENSOR_MANAGER_FAKE_MOISTURE
+                results[0] = moistureSensors[i].moisture();
+                results[1] = moistureSensors[i].moisture();
+                results[2] = moistureSensors[i].moisture();
+                results[3] = moistureSensors[i].moisture();
+            #else
+                moistureSensors[i]->readFdcChannels(results);
+            #endif
+            values.moisture[4*i] = results[0];
+            values.moisture[4*i+1] = results[1];
+            values.moisture[4*i+2] = results[2];
+            values.moisture[4*i+3] = results[3];
+            sensorManager_DEBUG("moisture[%d]: %d", 4*i, values.moisture[4*i]);
+            sensorManager_DEBUG("moisture[%d]: %d", 4*i+1, values.moisture[4*i+1]);
+            sensorManager_DEBUG("moisture[%d]: %d", 4*i+2, values.moisture[4*i+2]);
+            sensorManager_DEBUG("moisture[%d]: %d", 4*i+3, values.moisture[4*i+3]);
+        }
         #if MBED_CONF_APP_NUCLEO
             values.battery = batterySensor.voltage();
         #else
             values.battery = ((AnalogIn(PA_4).read_u16()*3.3)/pow(2,16))*((330000.0+220000.0)/330000.0);
         #endif
-
         sensorManager_DEBUG("battery: %f", values.battery);
+
         sleep_all();
         return values;
     }
