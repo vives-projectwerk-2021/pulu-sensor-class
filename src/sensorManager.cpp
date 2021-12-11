@@ -92,7 +92,7 @@ namespace Pulu {
         sensorManager_DEBUG("battery: %f", values.battery);
 
         sleep_all(m.status);
-        return values;
+        return m;
     }
 
     void sensorManager::sleep_all(Sensors::status &status) {
