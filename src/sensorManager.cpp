@@ -89,7 +89,7 @@ namespace Pulu {
         #else
             m.values.battery = ((AnalogIn(PA_4).read_u16()*3.3)/pow(2,16))*((330000.0+220000.0)/330000.0);
         #endif
-        sensorManager_DEBUG("battery: %f", values.battery);
+        sensorManager_DEBUG("battery: %f", m.values.battery);
 
         sleep_all(m.status);
         return m;
@@ -123,6 +123,6 @@ namespace Pulu {
             }
         #endif
         // give time to sensors to start measuring after wake up
-        ThisThread::sleep_for(200ms);
+        ThisThread::sleep_for(1s);
     }
 };
